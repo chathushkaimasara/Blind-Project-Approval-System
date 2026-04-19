@@ -1,0 +1,29 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    var roles = await UserManager.GetRolesAsync(await UserManager.GetUserAsync(User));
+    var role = roles.FirstOrDefault() ?? "User";
+
+    <li class="nav-item">
+        <a  class="nav-link text-dark" asp-area="" asp-controller="@($"{role}Dashboard")" asp-action="Index" title="Manage">Hello @User.Identity?.Name! [@role]</a>
+    </li>
+    <li class="nav-item">
+        <form  class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+    </li>
+}
+</ul>
