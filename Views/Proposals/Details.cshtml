@@ -1,0 +1,56 @@
+@model BlindMatchPAS.Models.ProjectProposal
+
+@{
+    ViewData["Title"] = "Proposal Details";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="StudentDashboard" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Proposal Details</li>
+      </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">@Model.Title</h5>
+            <div>
+                @if (Model.Status == "Pending")
+                {
+                    <span class="badge bg-warning text-dark">Pending</span>
+                }
+                else if (Model.Status == "Matched")
+                {
+                    <span class="badge bg-success">Matched</span>
+                }
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h6>Abstract</h6>
+                    <p class="text-justify" style="white-space: pre-wrap;">@Model.Abstract</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6>Research Area</h6>
+                            <p>@Model.ResearchArea</p>
+                            
+                            <h6>Tech Stack</h6>
+                            <p>@Model.TechStack</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-white text-end">
+            <a asp-controller="StudentDashboard" asp-action="Index" class="btn btn-outline-secondary">Back to Dashboard</a>
+            @if (Model.Status != "Matched")
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Proposal</a>
+            }
+        </div>
+    </div>
+</div>

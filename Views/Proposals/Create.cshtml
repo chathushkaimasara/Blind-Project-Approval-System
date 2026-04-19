@@ -1,0 +1,65 @@
+@model BlindMatchPAS.Models.ProjectProposal
+
+@{
+    ViewData["Title"] = "Create Proposal";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="StudentDashboard" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create Proposal</li>
+      </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Submit Project Proposal</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label font-weight-bold"></label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter a descriptive title" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Abstract" class="form-label font-weight-bold"></label>
+                            <textarea asp-for="Abstract" class="form-control" rows="5" placeholder="Provide a brief summary of your project"></textarea>
+                            <span asp-validation-for="Abstract" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="TechStack" class="form-label font-weight-bold">Tech Stack</label>
+                                <input asp-for="TechStack" class="form-control" placeholder="e.g. ASP.NET Core, React, SQL" />
+                                <span asp-validation-for="TechStack" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ResearchArea" class="form-label font-weight-bold">Research Area</label>
+                                <input asp-for="ResearchArea" class="form-control" placeholder="e.g. AI, Cyber Security, Web Dev" />
+                                <span asp-validation-for="ResearchArea" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+                        
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="StudentDashboard" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit Proposal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -10,5 +10,7 @@ namespace BlindMatchPAS.Models
             : base(options)
         {
         }
+
+        public DbSet<ProjectProposal> ProjectProposals { get; set; }
     }
 }
