@@ -52,7 +52,11 @@ namespace BlindMatchPAS.Controllers
             var proposal = await _context.ProjectProposals.FindAsync(id);
             if (proposal == null || proposal.Status != "Pending") return NotFound();
 
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
             proposal.Status = "Matched";
+            proposal.SupervisorId = user.Id;
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Project proposal accepted and matched.";
