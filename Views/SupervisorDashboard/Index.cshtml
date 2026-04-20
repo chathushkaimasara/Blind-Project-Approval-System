@@ -1,8 +1,149 @@
+@model IEnumerable<BlindMatchPAS.Models.ProjectProposal>
 @{
-    ViewData["Title"] = "Supervisor Dashboard";
+    ViewData["Title"] = "Supervisor Dashboard - Project Proposals";
+    var availableAreas = ViewBag.AvailableAreas as List<string> ?? new List<string>();
+    var selectedAreas = ViewBag.SelectedAreas as List<string> ?? new List<string>();
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4">Welcome to the Supervisor Dashboard</h1>
-    <p>You have successfully logged in as a <strong>Supervisor</strong>.</p>
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="display-6 fw-bold text-primary mb-0">Available Project Proposals</h2>
+            <p class="text-muted mt-2">Review pending project proposals blindly. Select your primary expertise areas to filter.</p>
+        </div>
+    </div>
+
+    <!-- Filter Section (Expertise Areas) -->
+    <div class="card shadow-sm border-0 bg-light rounded-4 mb-5">
+        <div class="card-body p-4">
+            <h5 class="card-title fw-bold">My Expertise Areas Filter</h5>
+            <form method="get" asp-action="Index">
+                <div class="row align-items-center g-3 mt-2">
+                    @if (availableAreas.Any())
+                    {
+                        <div class="col-md-9 d-flex flex-wrap gap-2">
+                            @foreach (var area in availableAreas)
+                            {
+                                bool isChecked = selectedAreas.Contains(area);
+                                <div class="form-check form-switch custom-control custom-switch border rounded px-4 py-2 bg-white shadow-sm d-flex align-items-center mb-0" style="gap: 15px;">
+                                    <input class="form-check-input" type="checkbox" name="selectedAreas" value="@area" id="area_@area" @(isChecked ? "checked" : "") style="cursor: pointer; transform: scale(1.2);">
+                                    <label class="form-check-label mb-0 fw-semibold text-dark" for="area_@area" style="cursor: pointer; font-size: 0.95rem;">@area</label>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow">Apply Filters</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 rounded-3 ms-2 shadow-sm">Reset</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No research areas found in current pending projects.</p>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project List (Blind Review) -->
+    <div class="row g-4">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center py-5">
+                <div class="text-muted display-6">No proposals match your criteria</div>
+                <p class="text-muted mt-2">Try adjusting your selected expertise areas or check back later.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var proposal in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden proposal-card transition">
+                        <div class="card-header bg-gradient-primary text-white border-0 py-3">
+                            <span class="badge bg-light text-primary mb-2 shadow-sm">@proposal.ResearchArea</span>
+                            <h5 class="card-title fw-bold mb-0 text-truncate" title="@proposal.Title">@proposal.Title</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column p-4">
+                            <h6 class="text-muted fw-bold mb-2">Abstract</h6>
+                            <p class="card-text text-secondary mb-4 flex-grow-1" style="font-size: 0.95rem; line-height: 1.6;">
+                                @(proposal.Abstract.Length > 200 ? proposal.Abstract.Substring(0, 200) + "..." : proposal.Abstract)
+                            </p>
+                            
+                            <hr class="text-muted alpha-50">
+                            
+                            <h6 class="text-muted fw-bold mb-2">Tech Stack</h6>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                @foreach (var tech in proposal.TechStack.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <span class="badge bg-secondary rounded-pill px-3 py-2 fw-normal shadow-sm">@tech</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 px-4 pb-4 pt-0 d-flex justify-content-between gap-2">
+                            <form asp-action="Accept" method="post" class="flex-grow-1">
+                                <input type="hidden" name="id" value="@proposal.Id" />
+                                @foreach (var area in selectedAreas)
+                                {
+                                    <input type="hidden" name="selectedAreas" value="@area" />
+                                }
+                                <button type="submit" class="btn btn-success w-100 fw-bold rounded-3 shadow-sm btn-accept">
+                                    Accept
+                                </button>
+                            </form>
+
+                            <form asp-action="Reject" method="post" class="flex-grow-1">
+                                <input type="hidden" name="id" value="@proposal.Id" />
+                                @foreach (var area in selectedAreas)
+                                {
+                                    <input type="hidden" name="selectedAreas" value="@area" />
+                                }
+                                <button type="submit" class="btn btn-outline-danger w-100 fw-bold rounded-3 shadow-sm btn-reject">
+                                    Reject
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    }
+    
+    .proposal-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    
+    .proposal-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.15)!important;
+    }
+
+    .btn-accept:hover {
+        background-color: #198754;
+        transform: scale(1.02);
+    }
+
+    .btn-reject:hover {
+        background-color: #dc3545;
+        color: white;
+        transform: scale(1.02);
+    }
+
+    .transition {
+        transition: all 0.3s ease;
+    }
+</style>
