@@ -19,7 +19,6 @@ namespace BlindMatchPAS.Controllers
             _userManager = userManager;
         }
 
-        // GET: Proposals
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -29,7 +28,6 @@ namespace BlindMatchPAS.Controllers
             return View(proposals);
         }
 
-        // GET: Proposals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -39,20 +37,17 @@ namespace BlindMatchPAS.Controllers
             
             if (proposal == null) return NotFound();
 
-            // Ensure the student owns this proposal
             var userId = _userManager.GetUserId(User);
             if (proposal.StudentId != userId) return Forbid();
 
             return View(proposal);
         }
 
-        // GET: Proposals/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Proposals/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Abstract,TechStack,ResearchArea")] ProjectProposal proposal)
@@ -70,7 +65,6 @@ namespace BlindMatchPAS.Controllers
             return View(proposal);
         }
 
-        // GET: Proposals/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -78,11 +72,9 @@ namespace BlindMatchPAS.Controllers
             var proposal = await _context.ProjectProposals.FindAsync(id);
             if (proposal == null) return NotFound();
 
-            // Ensure the student owns this proposal
             var userId = _userManager.GetUserId(User);
             if (proposal.StudentId != userId) return Forbid();
 
-            // Prevent editing if already matched
             if (proposal.Status == "Matched")
             {
                 TempData["ErrorMessage"] = "You cannot edit a proposal that has already been matched.";
@@ -92,14 +84,12 @@ namespace BlindMatchPAS.Controllers
             return View(proposal);
         }
 
-        // POST: Proposals/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Abstract,TechStack,ResearchArea")] ProjectProposal proposal)
         {
             if (id != proposal.Id) return NotFound();
 
-            // Fetch original to check ownership and status
             var original = await _context.ProjectProposals.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
             if (original == null) return NotFound();
 
@@ -117,7 +107,7 @@ namespace BlindMatchPAS.Controllers
                 try
                 {
                     proposal.StudentId = userId;
-                    proposal.Status = "Pending"; // Maintain pending status or reset if edited
+                    proposal.Status = "Pending"; 
                     _context.Update(proposal);
                     await _context.SaveChangesAsync();
                 }
@@ -131,7 +121,6 @@ namespace BlindMatchPAS.Controllers
             return View(proposal);
         }
 
-        // GET: Proposals/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -152,7 +141,6 @@ namespace BlindMatchPAS.Controllers
             return View(proposal);
         }
 
-        // POST: Proposals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

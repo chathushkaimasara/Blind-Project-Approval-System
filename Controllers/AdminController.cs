@@ -24,7 +24,6 @@ namespace BlindMatchPAS.Controllers
             _context = context;
         }
 
-        // --- Dashboard ---
         public async Task<IActionResult> Index()
         {
             ViewBag.TotalUsers = await _userManager.Users.CountAsync();
@@ -35,7 +34,6 @@ namespace BlindMatchPAS.Controllers
             return View();
         }
 
-        // --- User Management ---
         public async Task<IActionResult> Users()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -145,7 +143,6 @@ namespace BlindMatchPAS.Controllers
             return View(model);
         }
 
-        // --- Research Area Management ---
         public async Task<IActionResult> ResearchAreas()
         {
             return View(await _context.ResearchAreas.ToListAsync());
@@ -221,7 +218,6 @@ namespace BlindMatchPAS.Controllers
             return _context.ResearchAreas.Any(e => e.Id == id);
         }
 
-        // --- Matches & Reassignment ---
         public async Task<IActionResult> Matches()
         {
             var projects = await _context.ProjectProposals

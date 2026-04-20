@@ -23,7 +23,6 @@ namespace BlindMatchPAS.Controllers
 
         public async Task<IActionResult> Index(List<string> selectedAreas)
         {
-            // Get distinct research areas from projects for the multiselect filter
             var availableAreas = await _context.ProjectProposals
                                       .Select(p => p.ResearchArea)
                                       .Distinct()
@@ -32,7 +31,6 @@ namespace BlindMatchPAS.Controllers
             ViewBag.AvailableAreas = availableAreas;
             ViewBag.SelectedAreas = selectedAreas ?? new List<string>();
 
-            // View only pending projects
             var proposalsQuery = _context.ProjectProposals.Where(p => p.Status == "Pending");
 
             if (selectedAreas != null && selectedAreas.Any())
@@ -60,8 +58,7 @@ namespace BlindMatchPAS.Controllers
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Project proposal accepted and matched.";
-            
-            // Re-pass the selected areas to maintain filter state
+
             return RedirectToAction(nameof(Index), new { selectedAreas });
         }
 
@@ -76,8 +73,7 @@ namespace BlindMatchPAS.Controllers
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Project proposal has been rejected.";
-            
-            // Re-pass the selected areas to maintain filter state
+
             return RedirectToAction(nameof(Index), new { selectedAreas });
         }
 

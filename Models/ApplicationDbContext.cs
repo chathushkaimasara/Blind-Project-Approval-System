@@ -19,7 +19,6 @@ namespace BlindMatchPAS.Models
         {
             base.OnModelCreating(builder);
 
-            // Configure Matches to prevent cascade delete cycles if necessary
             builder.Entity<Match>()
                 .HasOne(m => m.Student)
                 .WithMany()
