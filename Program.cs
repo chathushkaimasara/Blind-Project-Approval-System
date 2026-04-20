@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BlindMatchPASContext")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
     // Password setings can be simplified for development
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;

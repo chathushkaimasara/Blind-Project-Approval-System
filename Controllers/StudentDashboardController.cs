@@ -10,9 +10,9 @@ namespace BlindMatchPAS.Controllers
     public class StudentDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public StudentDashboardController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public StudentDashboardController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
