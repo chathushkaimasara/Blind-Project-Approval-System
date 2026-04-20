@@ -80,5 +80,18 @@ namespace BlindMatchPAS.Controllers
             // Re-pass the selected areas to maintain filter state
             return RedirectToAction(nameof(Index), new { selectedAreas });
         }
+
+        public async Task<IActionResult> MatchedProjects()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var proposals = await _context.ProjectProposals
+                .Include(p => p.Student)
+                .Where(p => p.SupervisorId == userId && p.Status == "Matched")
+                .ToListAsync();
+
+            return View(proposals);
+        }
     }
 }

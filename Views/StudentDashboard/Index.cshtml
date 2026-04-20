@@ -46,6 +46,7 @@
                                 <th>Title</th>
                                 <th>Research Area</th>
                                 <th>Tech Stack</th>
+                                <th>Supervisor</th>
                                 <th>Status</th>
                                 <th class="text-end">Actions</th>
                             </tr>
@@ -58,6 +59,17 @@
                                     <td>@item.ResearchArea</td>
                                     <td>
                                         <small class="text-muted">@item.TechStack</small>
+                                    </td>
+                                    <td>
+                                        @if (item.Status == "Matched" && item.Supervisor != null)
+                                        {
+                                            <div><strong>@item.Supervisor.UserName</strong></div>
+                                            <div><small>@item.Supervisor.Email</small></div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not matched yet</span>
+                                        }
                                     </td>
                                     <td>
                                         @if (item.Status == "Pending")

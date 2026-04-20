@@ -1,0 +1,70 @@
+@model IEnumerable<BlindMatchPAS.Models.ProjectProposal>
+
+@{
+    ViewData["Title"] = "Matched Projects";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-5">Matched Projects</h1>
+            <p class="text-muted">View details and contact information for your matched students.</p>
+        </div>
+        <div class="col-auto">
+            <a asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="card-title mb-0">My Accepted Projects</h5>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-people display-1 text-light"></i>
+                    <p class="mt-3">You haven't matched with any projects yet.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Project Title</th>
+                                <th>Research Area</th>
+                                <th>Student Identity Reveal</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><strong>@item.Title</strong></td>
+                                    <td>@item.ResearchArea</td>
+                                    <td>
+                                        @if (item.Student != null)
+                                        {
+                                            <div><strong>@item.Student.UserName</strong></div>
+                                            <div><a href="mailto:@item.Student.Email">@item.Student.Email</a></div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Proposals" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">
+                                            <i class="bi bi-eye"></i> View Proposal
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -30,9 +30,9 @@ namespace BlindMatchPAS.Models
         [ForeignKey("StudentId")]
         public virtual IdentityUser Student { get; set; }
 
-        public string SupervisorId { get; set; }
+        public string? SupervisorId { get; set; }
 
         [ForeignKey("SupervisorId")]
-        public virtual IdentityUser Supervisor { get; set; }
+        public virtual IdentityUser? Supervisor { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace BlindMatchPAS.Controllers
         {
             var userId = _userManager.GetUserId(User);
             var proposals = await _context.ProjectProposals
+                .Include(p => p.Supervisor)
                 .Where(p => p.StudentId == userId)
                 .ToListAsync();
             return View(proposals);
