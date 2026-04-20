@@ -1,0 +1,54 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <h2 class="display-4">@ViewBag.TotalUsers</h2>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-action="Users" class="text-white text-decoration-none">Manage Users <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success text-white h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Projects</h5>
+                    <h2 class="display-4">@ViewBag.TotalProjects</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-info text-white h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Allocated Projects</h5>
+                    <h2 class="display-4">@ViewBag.TotalMatches</h2>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-action="Matches" class="text-white text-decoration-none">View Matches <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Research Areas</h5>
+                    <h2 class="display-4">@ViewBag.TotalResearchAreas</h2>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-action="ResearchAreas" class="text-dark text-decoration-none">Manage Areas <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

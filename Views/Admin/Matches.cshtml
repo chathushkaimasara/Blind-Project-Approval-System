@@ -1,0 +1,51 @@
+@model IEnumerable<BlindMatchPAS.Models.MatchListViewModel>
+
+@{
+    ViewData["Title"] = "Project Matches";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Project Allocations</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Project Title</th>
+                        <th>Student</th>
+                        <th>Supervisor</th>
+                        <th>Research Area</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.StudentEmail</td>
+                            <td>@item.SupervisorEmail</td>
+                            <td>
+                                <span class="badge bg-info text-dark">@item.ResearchArea</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">@item.Status</span>
+                            </td>
+                            <td>
+                                <a asp-action="ReassignProject" asp-route-id="@item.ProjectId" class="btn btn-sm btn-outline-warning">Reassign</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">No successful matches found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -12,5 +12,6 @@ namespace BlindMatchPAS.Models
         }
 
         public DbSet<ProjectProposal> ProjectProposals { get; set; }
+        public DbSet<ResearchArea> ResearchAreas { get; set; }
     }
 }

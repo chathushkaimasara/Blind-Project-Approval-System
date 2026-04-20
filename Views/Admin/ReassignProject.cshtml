@@ -1,0 +1,45 @@
+@model BlindMatchPAS.Models.ReassignProjectViewModel
+
+@{
+    ViewData["Title"] = "Reassign Project";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Reassign Project Supervisor</h3>
+                    
+                    <div class="alert alert-info">
+                        <strong>Project:</strong> @Model.ProjectTitle<br />
+                        <strong>Current Supervisor:</strong> @Model.CurrentSupervisorEmail
+                    </div>
+
+                    <form asp-action="ReassignProject" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="ProjectId" />
+                        <input type="hidden" asp-for="CurrentSupervisorId" />
+
+                        <div class="mb-4">
+                            <label asp-for="NewSupervisorId" class="form-label"></label>
+                            <select asp-for="NewSupervisorId" class="form-select" asp-items="ViewBag.Supervisors">
+                                <option value="">-- Select New Supervisor --</option>
+                            </select>
+                            <span asp-validation-for="NewSupervisorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning">Confirm Reassignment</button>
+                            <a asp-action="Matches" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
